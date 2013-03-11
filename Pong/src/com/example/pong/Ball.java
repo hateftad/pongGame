@@ -1,5 +1,8 @@
 package com.example.pong;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
 import com.example.math.Vector2;
 
 public class Ball {
@@ -7,10 +10,12 @@ public class Ball {
 	private Vector2 m_position;
 	private Vector2 m_velocity;
 	private float m_radius;
+	private int m_color;
 
 	
-	public Ball(Vector2 pos, float radius)
+	public Ball(Vector2 pos, float radius, int color)
 	{
+		m_color = color;
 		setPosition(new Vector2());
 		setVelocity(new Vector2());
 		setPosition(pos);
@@ -70,6 +75,11 @@ public class Ball {
 	public void setVelocity(float x, float y) {
 		this.m_velocity.x = x;
 		this.m_velocity.y = y;
+	}
+	public void draw(Canvas canvas, Paint paint)
+	{
+		paint.setColor(m_color);
+		canvas.drawCircle(getPosition().x, getPosition().y, getRadius(), paint);
 	}
 	
 }

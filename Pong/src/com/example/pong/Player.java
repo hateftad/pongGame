@@ -2,7 +2,11 @@ package com.example.pong;
 
 import com.example.math.Vector2;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Paint.Style;
 
 public class Player {
 
@@ -10,10 +14,12 @@ public class Player {
 	private Rect m_handle = new Rect();
 	private Vector2 m_position;
 	private Vector2 m_dimensions;
+	private int m_color;
 	private float m_moveSpeed = 10;
 	
-	public Player(int width, int height, Vector2 pos)
+	public Player(int width, int height, Vector2 pos, int color)
 	{
+		m_color = color;
 		m_dimensions = new Vector2(width, height);
 		setPosition(pos);
 		
@@ -64,24 +70,11 @@ public class Player {
 		setPosition(m_position);
 
 	}
-	/*
-	public void move(int x, float width)
+	
+	public void draw(Canvas canvas, Paint paint)
 	{
-		
-		
-		if (m_rectangle.right > (width)) {
-			m_position.x = ((width) - m_rectangle.right);
-		}
-		else if(m_position.x < 0)
-		{
-			m_position.x = 0;
-		}
-		
-		
-		m_position.x += x;
-		
-		setPosition(m_position);
+		paint.setColor(m_color);
+		canvas.drawRect(getRectangle(), paint);
 
 	}
-	*/
 }

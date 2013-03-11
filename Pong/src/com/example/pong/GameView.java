@@ -55,11 +55,11 @@ public class GameView extends View {
 	private void setUp()
 	{
 
-		m_ball = new Ball(new Vector2(m_window.x /2, m_window.y/2), 5.0f);
+		m_ball = new Ball(new Vector2(m_window.x /2, m_window.y/2), 5.0f, Color.WHITE);
 		m_ball.setVelocity(new Vector2(0.1f, 8.0f));
 
-		m_player1 = new Player(90, 10, new Vector2(m_window.x/2, m_window.y - PADDING));
-		m_player2 = new Player(90, 10, new Vector2(m_window.x/2, PADDING));
+		m_player1 = new Player(90, 10, new Vector2(m_window.x/2, m_window.y - PADDING), Color.RED);
+		m_player2 = new Player(90, 10, new Vector2(m_window.x/2, PADDING), Color.BLUE);
 
 	}
 
@@ -68,18 +68,12 @@ public class GameView extends View {
 	{
 		super.onDraw(canvas);
 		m_paint.setStyle(Style.FILL);
-		m_paint.setColor(Color.RED);
 
-		canvas.drawRect(m_player1.getRectangle(), m_paint);
-		m_paint.setStyle(Style.FILL);
-		m_paint.setColor(Color.GREEN);
+		m_player1.draw(canvas, m_paint);
+		m_player2.draw(canvas, m_paint);
+		m_ball.draw(canvas, m_paint);
 
-		canvas.drawRect(m_player2.getRectangle(), m_paint);
-
-		m_paint.setStyle(Style.FILL);
-		m_paint.setColor(Color.WHITE);
-
-		canvas.drawCircle(m_ball.getPosition().x, m_ball.getPosition().y, m_ball.getRadius(), m_paint);
+		
 
 	}
 
@@ -110,13 +104,13 @@ public class GameView extends View {
 		}
 
 		if (collided(m_player1.getRectangle())) {
-			if (m_ball.getPosition().x < (m_player1.getRectangle().centerX() - 20)) {
-				//m_ball.inverseY();
-				m_ball.setVelocity(-10, -m_ball.getVelocity().y);
+			if (m_ball.getPosition().x < (m_player1.getRectangle().centerX())) {
+				m_ball.inverseY();
+				m_ball.setVelocity(-8, -m_ball.getVelocity().y);
 			}
-			if (m_ball.getPosition().x > (m_player1.getRectangle().centerX() + 20)){
+			if (m_ball.getPosition().x > (m_player1.getRectangle().centerX())){
 				//m_ball.inverseY();
-				m_ball.setVelocity(10, -m_ball.getVelocity().y);
+				m_ball.setVelocity(8, -m_ball.getVelocity().y);
 			}
 			else {
 				m_ball.inverseY();
@@ -124,13 +118,17 @@ public class GameView extends View {
 			
 		}
 		if (collided(m_player2.getRectangle())) {
-			if (m_ball.getPosition().x < (m_player1.getRectangle().centerX())) {
+			if (m_ball.getPosition().x < (m_player1.getRectangle().centerX() - 20)) {
 				//m_ball.inverseY();
-				m_ball.setVelocity(-10, -m_ball.getVelocity().y);
+				m_ball.setVelocity(-8, -m_ball.getVelocity().y);
 			}
-			if (m_ball.getPosition().x > (m_player1.getRectangle().centerX())){
+			if (m_ball.getPosition().x > (m_player1.getRectangle().centerX() + 20)){
 				//m_ball.inverseY();
-				m_ball.setVelocity(10, -m_ball.getVelocity().y);
+				m_ball.setVelocity(8, -m_ball.getVelocity().y);
+			}
+			else
+			{
+				m_ball.inverseY();
 			}
 			
 		}
@@ -181,8 +179,8 @@ public class GameView extends View {
 
 		if (by + radius > rt &&
 			by + radius < rb &&
-			bx < rr && 
-			bx > rl ) {
+			bx <= rr && 
+			bx >= rl ) {
 			return true;
 		}
 
@@ -220,28 +218,6 @@ public class GameView extends View {
 		return true;
 
 	}
-	/*
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-
-		switch (event.getAction())
-		{
-		case MotionEvent.ACTION_DOWN:
-			m_offset = event.getX();
-			break;
-		case MotionEvent.ACTION_MOVE:
-
-			m_x = (int) (event.getX() - m_offset);
-			break;
-		case MotionEvent.ACTION_UP:
-			m_x = 0;
-			break;
-
-		}
-		return true;
-
-	}
-	 */
 
 	static class RefreshHandler extends Handler {
 
