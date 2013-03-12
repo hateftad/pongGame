@@ -1,5 +1,7 @@
 package com.example.pong;
 
+import java.util.Random;
+
 import com.example.math.Vector2;
 
 import android.graphics.Canvas;
@@ -10,6 +12,7 @@ import android.graphics.Paint.Style;
 
 public class Player {
 
+	Random rn = new Random();
 	private Rect m_rectangle = new Rect();
 	private Rect m_handle = new Rect();
 	private Vector2 m_position;
@@ -106,6 +109,14 @@ public class Player {
 	}
 
 	public void setSpeed(float m_moveSpeed) {
+		
 		this.m_moveSpeed = m_moveSpeed;
+	}
+	
+	public void randomizeSpeed()
+	{
+		int randomNum = (int) ((Math.random() * (10 - 5 + 1) ) + 5);
+		System.out.println(randomNum);
+		m_moveSpeed = randomNum;
 	}
 }

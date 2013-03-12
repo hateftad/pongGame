@@ -1,6 +1,7 @@
 package com.example.pong;
 
 import java.lang.ref.WeakReference;
+import java.util.Random;
 
 import com.example.math.Vector2;
 
@@ -23,6 +24,7 @@ import android.view.WindowManager;
 public class GameView extends View {
 
 
+	
 	private final Paint m_paint = new Paint();
 	private Player m_player1;
 	private Player m_player2;
@@ -46,7 +48,7 @@ public class GameView extends View {
 		Display display = wm.getDefaultDisplay();
 		Point size = new Point();
 		display.getSize(size);
-
+		
 		m_window = new Vector2(size.x, size.y);
 		setUp();
 
@@ -85,8 +87,8 @@ public class GameView extends View {
 
 		m_ball.update();
 
-		if (m_ball.getPosition().x > m_window.x - m_ball.getRadius()*2 || 
-			m_ball.getPosition().x < 0 + m_ball.getRadius() * 2) {
+		if (m_ball.getPosition().x > m_window.x - m_ball.getRadius()*4 || 
+				m_ball.getPosition().x < 0 + m_ball.getRadius() * 4) {
 			m_ball.inverseX();
 		}
 
@@ -101,31 +103,33 @@ public class GameView extends View {
 		}
 
 		if (collided(m_player1.getRectangle())) {
-			if (m_ball.getPosition().x < m_player1.leftSide()) {
-				m_ball.inverseY();
-				m_ball.setVelocity(m_ball.getVelocity().x * -1.0f,m_ball.getVelocity().y );
+			if (m_ball.getPosition().x <= m_player1.leftSide()) {
+				m_ball.setVelocity(-m_ball.getVelocity().y, -m_ball.getVelocity().y );
 			}
-			if (m_ball.getPosition().x > m_player1.rightSide()){
-				
-				m_ball.inverseY();
-				m_ball.inverseX();
+			if (m_ball.getPosition().x >= m_player1.rightSide()){
+
+				m_ball.setVelocity(m_ball.getVelocity().y, -m_ball.getVelocity().y );
 			}
-			if (m_ball.getPosition().x < m_player1.rightSide() &&
-				m_ball.getPosition().x > m_player1.leftSide()) {
-				
+			if (m_ball.getPosition().x <= m_player1.rightSide() &&
+					m_ball.getPosition().x >= m_player1.leftSide()) {
+
 				m_ball.inverseY();
-				m_ball.inverseX();
-				System.out.println("middle");
 			}
 		}
 		if (collided(m_player2.getRectangle())) {
-			if (m_ball.getPosition().x < (m_player1.getRectangle().centerX())) {
+
+			if (m_ball.getPosition().x <= m_player2.leftSide()) {
+				m_ball.setVelocity(m_ball.getVelocity().y, -m_ball.getVelocity().y );
+			}
+			if (m_ball.getPosition().x >= m_player2.rightSide()){
+				m_ball.setVelocity(m_ball.getVelocity().y, -m_ball.getVelocity().y );
+			}
+			if (m_ball.getPosition().x <= m_player2.rightSide() &&
+					m_ball.getPosition().x >= m_player2.leftSide()) {
+				
 				m_ball.inverseY();
 			}
-			if (m_ball.getPosition().x > (m_player1.getRectangle().centerX())){
-				m_ball.inverseY();
-				m_ball.inverseX();
-			}
+			m_player2.randomizeSpeed();
 		}
 
 		doAI(m_player2);
@@ -134,13 +138,15 @@ public class GameView extends View {
 		m_redrawHandler.sleep(Math.max(0, (1000 / m_framesPerSecond) - diff) );
 
 	}
-	
+
 	private void doAI(Player ai)
 	{
 		float middle = m_player2.getRectangle().centerX();
 		float minRange = (m_window.x / 2);
 		float maxRange = (m_window.x / 2) - (m_player2.getDimensions().x);
 		float width = (m_player2.getDimensions().x);
+
+
 		if(m_ball.getPosition().y < m_window.y/2)
 		{
 			if (m_ball.getVelocity().y > 0) {
@@ -155,16 +161,18 @@ public class GameView extends View {
 			else if(m_ball.getVelocity().y < 0)
 			{
 				if (middle != m_ball.getPosition().x) {
-					
-					if (m_ball.getPosition().x < (middle - m_player2.getDimensions().x /2)) {
+
+					if (m_ball.getPosition().x < middle - 10) {
 						m_player2.move(-m_player2.getSpeed());
+
 					}
-					else if(m_ball.getPosition().x > (middle + m_player2.getDimensions().x/2))
+					else if(m_ball.getPosition().x > middle + 10)
 					{
 						m_player2.move(m_player2.getSpeed());
 					}
-					
+
 				}
+
 			}
 		}
 	}
@@ -180,9 +188,9 @@ public class GameView extends View {
 		float rb = rectangle.bottom;
 
 		if (by + radius>= rt &&
-			by <= rb &&
-			bx <= rr && 
-			bx >= rl ) {
+				by <= rb &&
+				bx <= rr && 
+				bx >= rl ) {
 			return true;
 		}
 

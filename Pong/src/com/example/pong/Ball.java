@@ -79,6 +79,13 @@ public class Ball {
 	
 	public void inverseY()
 	{
+
+		m_velocity.y = -m_velocity.y;
+		m_velocity.x = -m_velocity.x;
+	}
+	
+	public void inverseVelocity()
+	{
 		m_velocity.y = -m_velocity.y;
 	}
 	
