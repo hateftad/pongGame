@@ -1,5 +1,7 @@
 package com.example.pong;
 
+import java.util.Random;
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
@@ -7,6 +9,7 @@ import com.example.math.Vector2;
 
 public class Ball {
 
+	Random rn = new Random();
 	private Vector2 m_position;
 	private Vector2 m_velocity;
 	private float m_radius;
@@ -21,6 +24,17 @@ public class Ball {
 		setPosition(pos);
 		setRadius(radius);
 		
+	}
+	
+	public void resetBall(Vector2 start)
+	{
+		m_position.x = (start.x /2);
+		m_position.y = (start.y /2);
+		
+		int range = 1 - -1;
+		int randomNum =  rn.nextInt(range);
+		if(randomNum == 0) randomNum = -1;
+		setVelocity(0, randomNum * 10);
 	}
 	
 	public void setPosition(float x, float y)

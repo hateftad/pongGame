@@ -16,13 +16,36 @@ public class Player {
 	private Vector2 m_dimensions;
 	private int m_color;
 	private float m_moveSpeed = 10;
+	private int m_score;
+	private float m_canvasWidth;
 	
-	public Player(int width, int height, Vector2 pos, int color)
+	public Player(int width, int height, Vector2 pos, int color, float canvasWidth)
 	{
+		m_canvasWidth = canvasWidth;
+		m_score = 0;
 		m_color = color;
 		m_dimensions = new Vector2(width, height);
 		setPosition(pos);
-		
+	}
+	
+	public void addPoints()
+	{
+		m_score++;
+	}
+	
+	public int getPoints()
+	{
+		return m_score;
+	}
+	
+	public float leftSide()
+	{
+		return m_position.x + (m_dimensions.x /3);
+	}
+	
+	public float rightSide()
+	{
+		return m_rectangle.right - (m_dimensions.x /3); 
 	}
 	
 	public Rect getRectangle()
@@ -52,12 +75,12 @@ public class Player {
 		return m_dimensions;
 	}
 	
-	public void move(float x, float width)
+	public void move(float x)
 	{
 		
 		
-		if ((m_position.x + m_dimensions.x) > (width)) {
-			m_position.x = width - m_dimensions.x;
+		if ((m_position.x + m_dimensions.x) > m_canvasWidth) {
+			m_position.x = m_canvasWidth - m_dimensions.x;
 		}
 		else if(m_position.x < 0)
 		{
@@ -76,5 +99,13 @@ public class Player {
 		paint.setColor(m_color);
 		canvas.drawRect(getRectangle(), paint);
 
+	}
+
+	public float getSpeed() {
+		return m_moveSpeed;
+	}
+
+	public void setSpeed(float m_moveSpeed) {
+		this.m_moveSpeed = m_moveSpeed;
 	}
 }
