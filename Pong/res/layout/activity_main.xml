@@ -3,10 +3,10 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <com.example.pong.GameView
+    <com.example.pong.Game
         android:id="@+id/pong"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-    </com.example.pong.GameView>
+    </com.example.pong.Game>
 
 </FrameLayout>

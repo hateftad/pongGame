@@ -47,6 +47,11 @@ public class Player {
 		this.m_score++;
 	}
 	
+	public void resetPlayer()
+	{
+		this.m_score = 0;
+		setPosition(m_canvasWidth/2, getPosition().y);
+	}
 	public int getPoints()
 	{
 		return m_score;
@@ -72,6 +77,16 @@ public class Player {
 		return m_handle;
 	}
 	
+	public Vector2 getPosition()
+	{
+		return m_position;
+	}
+	
+	public Vector2 getDimensions()
+	{
+		return m_dimensions;
+	}
+	
 	public void setPosition(Vector2 pos)
 	{
 		this.m_rectangle.set((int)pos.x, (int) pos.y, (int)( pos.x + m_dimensions.x),(int)(pos.y + m_dimensions.y));
@@ -87,19 +102,8 @@ public class Player {
 		this.m_position.y = y;
 	}
 	
-	public Vector2 getPosition()
-	{
-		return m_position;
-	}
-	
-	public Vector2 getDimensions()
-	{
-		return m_dimensions;
-	}
-	
 	public void move(float x)
 	{
-		
 		
 		if ((m_position.x + m_dimensions.x) > m_canvasWidth) {
 			m_position.x = m_canvasWidth - m_dimensions.x;
@@ -159,5 +163,6 @@ public class Player {
 	public void isPlayer(boolean isPlayer) {
 		this.m_isPlayer = isPlayer;
 	}
+	
 }
 

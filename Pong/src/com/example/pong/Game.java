@@ -19,35 +19,34 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 
-public class GameView extends View {
+public class Game extends View {
 
+	static final int PADDING = 100;
+	static final int WINPOINT = 3;
 
-	
-	private final Paint m_paint = new Paint();
+	private Paint m_paint;
 	private Player m_player1;
 	private Player m_player2;
 	private Ball m_ball;
-
-	static final int PADDING = 100;
 	private Vector2 m_window;
+
 	private int m_textPos = 0;
+	private RefreshHandler m_redrawHandler;
+	private int m_framesPerSecond = 60;
 
-	private RefreshHandler m_redrawHandler = new RefreshHandler(this);
-	private int m_framesPerSecond = 30;
 
-
-	public GameView(Context context, AttributeSet attrs, int defStyle) {
+	public Game(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-
 	}
+
 	@SuppressLint("NewApi")
-	public GameView(Context context, AttributeSet attrs) {
+	public Game(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
 		Point size = new Point();
 		display.getSize(size);
-		
+
 		m_window = new Vector2(size.x, size.y);
 		setUp();
 
@@ -55,7 +54,8 @@ public class GameView extends View {
 
 	private void setUp()
 	{
-
+		m_redrawHandler = new RefreshHandler(this);
+		m_paint = new Paint();
 		m_ball = new Ball(new Vector2(m_window.x /2, m_window.y/2), 5.0f, Color.WHITE);
 		m_ball.setVelocity(new Vector2(0.1f, 8.0f));
 
@@ -63,35 +63,52 @@ public class GameView extends View {
 		m_player1.isPlayer(true);
 		m_player2 = new Player(90, 10, new Vector2(m_window.x/2, PADDING), Color.BLUE, m_window.x, false);
 		m_textPos = (int) m_player2.getDimensions().x /3;
+
+	}
+	
+	private void reset()
+	{
+		m_ball.resetBall(m_window);
+		m_player1.resetPlayer();
+		m_player2.resetPlayer();
+		m_player2.isPlayer(m_player2.isPlayer());
 	}
 
 	@Override
 	public void onDraw(Canvas canvas)
 	{
 		super.onDraw(canvas);
-		m_paint.setStyle(Style.FILL);
+		if(!foundWinner())
+		{
+			m_paint.setStyle(Style.FILL);
 
-		m_player1.draw(canvas, m_paint);
-		m_player2.draw(canvas, m_paint);
-		m_ball.draw(canvas, m_paint);
+			m_player1.draw(canvas, m_paint);
+			m_player2.draw(canvas, m_paint);
+			m_ball.draw(canvas, m_paint);
 
-		m_paint.setTextSize(25);
-		canvas.drawText(m_player1.getPoints()+"", 0, m_window.y, m_paint);
-		canvas.drawText(m_player2.getPoints()+"", m_window.x - m_textPos, m_textPos, m_paint);
+			m_paint.setTextSize(25);
+			canvas.drawText(m_player1.getPoints()+"", 0, m_window.y, m_paint);
+			canvas.drawText(m_player2.getPoints()+"", m_window.x - m_textPos, m_textPos, m_paint);
 		
-		
-		
-		
+		}
+		else {
+			m_paint.setStyle(Style.FILL);
+			m_paint.setColor(Color.GREEN);
+			canvas.drawText("GAME OVER!", m_window.x/3, m_window.y/3, m_paint);
+			canvas.drawText("Tap to restart!", m_window.x/3, m_window.y/2, m_paint);
+		}
 	}
 
 	public void update()
 	{
+		//if(foundWinner()) return;
+		
 		long now = System.currentTimeMillis();
 
 		m_ball.update();
 
-		if (m_ball.getPosition().x > m_window.x - m_ball.getRadius()*4 || 
-				m_ball.getPosition().x < 0 + m_ball.getRadius() * 4) {
+		if (m_ball.getPosition().x > m_window.x - m_ball.getRadius() * 3 || 
+				m_ball.getPosition().x < 0 + m_ball.getRadius() * 3) {
 			m_ball.inverseX();
 		}
 
@@ -129,7 +146,7 @@ public class GameView extends View {
 			}
 			if (m_ball.getPosition().x <= m_player2.rightSide() &&
 					m_ball.getPosition().x >= m_player2.leftSide()) {
-				
+
 				m_ball.inverseY();
 			}
 			m_player2.randomizeSpeed();
@@ -138,9 +155,9 @@ public class GameView extends View {
 		if (!m_player2.isPlayer()) {
 			m_player2 = doAI(m_player2);
 		}
-		
+
 		long diff = System.currentTimeMillis() - now;
-		m_redrawHandler.sleep(Math.max(0, (1000 / m_framesPerSecond) - diff) );
+		m_redrawHandler.sleep(Math.max(0, (1000 / m_framesPerSecond) - diff));
 
 	}
 
@@ -202,37 +219,39 @@ public class GameView extends View {
 
 		return false;
 	}
+	
+	private boolean foundWinner()
+	{
+		return (m_player1.getPoints() > WINPOINT-1 || m_player2.getPoints() > WINPOINT-1);
+	}
 
-	private boolean inside = false;
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 
-		//int x = (int) event.getX();
-		//int y = (int) event.getY();
-		
 		InputHandler ih = InputHandler.getInstance();
 
 		for(int i = 0; i < ih.getTouchCount(event); i++) {
-			
+
 			int x = (int) ih.getX(event, i);
-            int y = (int) ih.getY(event, i);
-            
+			int y = (int) ih.getY(event, i);
+
 			switch (event.getAction())
 			{
 			case MotionEvent.ACTION_DOWN:
-				
+
 				if(m_player1.getHandle().contains(x, y))
 				{
 					m_player1.setSelected(true);
 				}
-				
+
 				if(m_player2.getHandle().contains(x, y))
 				{
 					m_player2.setSelected(true);
 					m_player2.isPlayer(true);
 				}
 				
+
 				break;
 			case MotionEvent.ACTION_MOVE:
 				if (m_player1.isSelected()) {
@@ -245,8 +264,11 @@ public class GameView extends View {
 			case MotionEvent.ACTION_UP:
 				m_player1.setSelected(false);
 				m_player2.setSelected(false);
+				if (foundWinner()) {
+					reset();
+				}
 				break;
-	
+
 			}
 		}
 		return true;
@@ -255,18 +277,18 @@ public class GameView extends View {
 
 	static class RefreshHandler extends Handler {
 
-		private final WeakReference<GameView> m_service;
+		private final WeakReference<Game> m_service;
 
-		public RefreshHandler(GameView view) {
-			m_service = new WeakReference<GameView>(view);
+		public RefreshHandler(Game view) {
+			m_service = new WeakReference<Game>(view);
 		}
 
 		@Override
 		public void handleMessage(Message msg) {
-			GameView v = m_service.get();
-			if (v != null) {
-				v.update();
-				v.invalidate();
+			Game g = m_service.get();
+			if (g != null) {
+				g.update();
+				g.invalidate();
 			}
 
 		}
