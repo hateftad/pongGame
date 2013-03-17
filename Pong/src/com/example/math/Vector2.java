@@ -83,7 +83,6 @@ public class Vector2 {
 	public final float normalize() {
 		final float magnitude = length();
 
-		// TODO: I'm choosing safety over speed here.
 		if (magnitude != 0.0f) {
 			x /= magnitude;
 			y /= magnitude;
@@ -95,9 +94,7 @@ public class Vector2 {
 	public final void zero() {
 		set(0.0f, 0.0f);
 	}
-
-
-	//Useful Stuff	
+	
 	public String toString(){
 		NumberFormat formatter = new DecimalFormat("000.000");
 		return "("+formatter.format(x)+","+formatter.format(y)+")";
