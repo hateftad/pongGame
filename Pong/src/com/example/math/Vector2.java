@@ -1,7 +1,5 @@
 package com.example.math;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 public class Vector2 {
 	public int x;
@@ -94,9 +92,5 @@ public class Vector2 {
 	public final void zero() {
 		set(0, 0);
 	}
-	
-	public String toString(){
-		NumberFormat formatter = new DecimalFormat("000.000");
-		return "("+formatter.format(x)+","+formatter.format(y)+")";
-	}
+
 }

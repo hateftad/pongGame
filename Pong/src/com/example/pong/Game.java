@@ -20,8 +20,8 @@ import android.view.View;
 import android.view.WindowManager;
 
 public class Game extends View {
-	
-	
+
+
 	/* -------------------------DISCLAIMEER---------------------------------------------------------
 	 * Since the game is trivial, I saw no need for threading or the use of OpenGL. 
 	 * The graphics are kept simple and as requested the focus has been kept on clean 
@@ -51,7 +51,7 @@ public class Game extends View {
 	@SuppressLint("NewApi")
 	public Game(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		
+
 		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
 		Point size = new Point();
@@ -74,7 +74,7 @@ public class Game extends View {
 		m_player2 = new Player(90, 10, new Vector2(m_window.x/2, PADDING), Color.BLUE, m_window.x, false);
 		m_textPos = m_player2.getDimensions().x /3;
 	}
-	
+
 	private void reset()
 	{
 		m_ball.resetBall(m_window);
@@ -98,7 +98,7 @@ public class Game extends View {
 			m_paint.setTextSize(25);
 			canvas.drawText(m_player1.getPoints()+"", 0, m_window.y, m_paint);
 			canvas.drawText(m_player2.getPoints()+"", m_window.x - m_textPos, m_textPos, m_paint);
-		
+
 		}
 		else {
 			m_paint.setStyle(Style.FILL);
@@ -110,7 +110,7 @@ public class Game extends View {
 
 	public void update()
 	{
-		
+
 		long now = System.currentTimeMillis();
 
 		m_ball.update();
@@ -227,7 +227,7 @@ public class Game extends View {
 
 		return false;
 	}
-	
+
 	private boolean foundWinner()
 	{
 		return (m_player1.getPoints() > WINPOINT-1 || m_player2.getPoints() > WINPOINT-1);
@@ -258,7 +258,7 @@ public class Game extends View {
 					m_player2.setSelected(true);
 					m_player2.isPlayer(true);
 				}
-				
+
 
 				break;
 			case MotionEvent.ACTION_MOVE:
