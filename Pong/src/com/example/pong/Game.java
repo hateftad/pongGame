@@ -20,9 +20,19 @@ import android.view.View;
 import android.view.WindowManager;
 
 public class Game extends View {
+	
+	
+	/* -------------------------DISCLAIMEER---------------------------------------------------------
+	 * Since the game is trivial, I saw no need for threading or the use of OpenGL. 
+	 * The graphics are kept simple and as requested the focus has been kept on clean 
+	 * and to my best ability, within given time frame, well structured code.
+	 * Unfortunately I do not own an Android device, so testing has been conducted purely on the emulator. 
+	 * ---------------------------------------------------------------------------------------------
+	 */
 
 	static final int PADDING = 100;
 	static final int WINPOINT = 3;
+	private int m_textPos = 0;
 
 	private Paint m_paint;
 	private Player m_player1;
@@ -30,7 +40,6 @@ public class Game extends View {
 	private Ball m_ball;
 	private Vector2 m_window;
 
-	private int m_textPos = 0;
 	private RefreshHandler m_redrawHandler;
 	private int m_framesPerSecond = 60;
 
@@ -42,6 +51,7 @@ public class Game extends View {
 	@SuppressLint("NewApi")
 	public Game(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		
 		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
 		Point size = new Point();
@@ -57,13 +67,12 @@ public class Game extends View {
 		m_redrawHandler = new RefreshHandler(this);
 		m_paint = new Paint();
 		m_ball = new Ball(new Vector2(m_window.x /2, m_window.y/2), 5.0f, Color.WHITE);
-		m_ball.setVelocity(new Vector2(0.1f, 8.0f));
+		m_ball.setVelocity(new Vector2(0, 8));
 
 		m_player1 = new Player(90, 10, new Vector2(m_window.x/2, m_window.y - PADDING), Color.RED, m_window.x, true);
 		m_player1.isPlayer(true);
 		m_player2 = new Player(90, 10, new Vector2(m_window.x/2, PADDING), Color.BLUE, m_window.x, false);
-		m_textPos = (int) m_player2.getDimensions().x /3;
-
+		m_textPos = m_player2.getDimensions().x /3;
 	}
 	
 	private void reset()
@@ -101,7 +110,6 @@ public class Game extends View {
 
 	public void update()
 	{
-		//if(foundWinner()) return;
 		
 		long now = System.currentTimeMillis();
 

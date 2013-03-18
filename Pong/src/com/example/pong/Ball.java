@@ -37,7 +37,7 @@ public class Ball {
 		setVelocity(0, randomNum * 10);
 	}
 	
-	public void setPosition(float x, float y)
+	public void setPosition(int x, int y)
 	{
 		m_position.set(x, y);
 	}
@@ -79,21 +79,20 @@ public class Ball {
 	
 	public void inverseY()
 	{
-
 		m_velocity.y = -m_velocity.y;
-		m_velocity.x = -m_velocity.x;
 	}
 	
 	public void inverseVelocity()
 	{
 		m_velocity.y = -m_velocity.y;
+		m_velocity.x = -m_velocity.x;
 	}
 	
 	public void setVelocity(Vector2 m_velocity) {
 		this.m_velocity = m_velocity;
 	}
 	
-	public void setVelocity(float x, float y) {
+	public void setVelocity(int x, int y) {
 		this.m_velocity.x = x;
 		this.m_velocity.y = y;
 	}

@@ -4,16 +4,16 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 public class Vector2 {
-	public float x;
-	public float y;
+	public int x;
+	public int y;
 
 	public static final Vector2 ZERO = new Vector2(0, 0);
 
 	public Vector2() {
 	}
 
-	public Vector2(float xValue, float yValue) {
-		set(xValue, yValue);
+	public Vector2(int x, int y) {
+		set(x, y);
 	}
 
 	public Vector2(Vector2 other) {
@@ -57,9 +57,9 @@ public class Vector2 {
 		y = other.y;
 	}
 
-	public final void set(float xValue, float yValue) {
-		x = xValue;
-		y = yValue;
+	public final void set(int xVal, int yVal) {
+		x = xVal;
+		y = yVal;
 	}
 
 	public final float dot(Vector2 other) {
@@ -92,7 +92,7 @@ public class Vector2 {
 	}
 
 	public final void zero() {
-		set(0.0f, 0.0f);
+		set(0, 0);
 	}
 	
 	public String toString(){

@@ -18,13 +18,13 @@ public class Player {
 	private Vector2 m_dimensions;
 	private Vector2 m_handleDimensions;
 	private int m_color;
-	private float m_moveSpeed = 10;
+	private int m_moveSpeed = 10;
 	private int m_score;
-	private float m_canvasWidth;
+	private int m_canvasWidth;
 	private boolean m_selected;
 	private boolean m_isPlayer;
 	
-	public Player(int width, int height, Vector2 pos, int color, float canvasWidth, boolean player1)
+	public Player(int width, int height, Vector2 pos, int color, int canvasWidth, boolean player1)
 	{
 		m_selected = false;
 		m_canvasWidth = canvasWidth;
@@ -89,20 +89,20 @@ public class Player {
 	
 	public void setPosition(Vector2 pos)
 	{
-		this.m_rectangle.set((int)pos.x, (int) pos.y, (int)( pos.x + m_dimensions.x),(int)(pos.y + m_dimensions.y));
-		this.m_handle.set((int)pos.x, (int) (pos.y - (m_handleDimensions.y)), (int)( pos.x + m_dimensions.x), (int)( pos.y + m_handleDimensions.x));
+		this.m_rectangle.set(pos.x, pos.y, ( pos.x + m_dimensions.x),(pos.y + m_dimensions.y));
+		this.m_handle.set(pos.x, (pos.y - (m_handleDimensions.y)), ( pos.x + m_dimensions.x),( pos.y + m_handleDimensions.x));
 		this.m_position = pos;
 	}
 	
-	public void setPosition(float x, float y)
+	public void setPosition(int x, int y)
 	{
-		this.m_rectangle.set((int)x, (int) y, (int)( x + m_dimensions.x),(int)(y + m_dimensions.y));
-		this.m_handle.set((int)x, (int) ( y - (m_handleDimensions.y)), (int)( x + m_dimensions.x), (int)( y + m_handleDimensions.x));
+		this.m_rectangle.set(x, y, ( x + m_dimensions.x),(y + m_dimensions.y));
+		this.m_handle.set(x, ( y - (m_handleDimensions.y)), ( x + m_dimensions.x), ( y + m_handleDimensions.x));
 		this.m_position.x = x;
 		this.m_position.y = y;
 	}
 	
-	public void move(float x)
+	public void move(int x)
 	{
 		
 		if ((m_position.x + m_dimensions.x) > m_canvasWidth) {
@@ -131,11 +131,11 @@ public class Player {
 		}
 	}
 
-	public float getSpeed() {
+	public int getSpeed() {
 		return m_moveSpeed;
 	}
 
-	public void setSpeed(float m_moveSpeed) {
+	public void setSpeed(int m_moveSpeed) {
 		
 		this.m_moveSpeed = m_moveSpeed;
 	}
