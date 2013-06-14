@@ -4,6 +4,9 @@ import java.util.Random;
 
 import com.example.math.Vector2;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,6 +20,7 @@ public class Player {
 	private Vector2 m_position;
 	private Vector2 m_dimensions;
 	private Vector2 m_handleDimensions;
+	private Bitmap m_texture;
 	private int m_color;
 	private int m_moveSpeed = 10;
 	private int m_score;
@@ -24,19 +28,19 @@ public class Player {
 	private boolean m_selected;
 	private boolean m_isPlayer;
 
-	public Player(int width, int height, Vector2 pos, int color, int canvasWidth, boolean player1)
+	public Player(Context context, Vector2 dimension, Vector2 pos, int resourceId, int canvasWidth, boolean player1)
 	{
 		m_selected = false;
 		m_canvasWidth = canvasWidth;
 		m_score = 0;
-		m_color = color;
-		m_dimensions = new Vector2(width, height);
+		m_texture = BitmapFactory.decodeResource(context.getResources(), resourceId);
+		m_dimensions = new Vector2(dimension);
 		if (player1) {
-			m_handleDimensions = new Vector2(height * 10, 0);
+			m_handleDimensions = new Vector2(dimension.y * 10, 0);
 		}
 		else
 		{
-			m_handleDimensions = new Vector2(0, height * 10);
+			m_handleDimensions = new Vector2(0, dimension.y * 10);
 		}
 
 		setPosition(pos);
@@ -121,9 +125,9 @@ public class Player {
 
 	public void draw(Canvas canvas, Paint paint)
 	{
-		paint.setColor(m_color);
-		canvas.drawRect(getRectangle(), paint);
 
+		canvas.drawBitmap(m_texture, m_position.x, m_position.y, paint);
+		
 		if(!isPlayer()){
 			paint.setTextSize(12);
 			paint.setColor(Color.WHITE);

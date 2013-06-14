@@ -3,28 +3,25 @@ package com.example.pong;
 import java.lang.ref.WeakReference;
 import com.example.math.Vector2;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.view.Display;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 
 public class Game extends View {
 
 
 	/* -------------------------DISCLAIMEER---------------------------------------------------------
 	 * Since the game is trivial, I saw no need for threading or the use of OpenGL. 
-	 * The graphics are kept simple and as requested the focus has been kept on clean 
+	 * The graphics are kept simple and as requested, the focus has been kept on clean 
 	 * and to my best ability, within given time frame, well structured code.
 	 * Unfortunately I do not own an Android device, so testing has been conducted purely on the emulator. 
 	 * ---------------------------------------------------------------------------------------------
@@ -48,16 +45,14 @@ public class Game extends View {
 		super(context, attrs, defStyle);
 	}
 
-	@SuppressLint("NewApi")
 	public Game(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
-		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-		Display display = wm.getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-
-		m_window = new Vector2(size.x, size.y);
+		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+		int width = metrics.widthPixels;
+		int height = metrics.heightPixels;
+		
+		m_window = new Vector2(width, height);
 		setUp();
 
 	}
@@ -69,9 +64,9 @@ public class Game extends View {
 		m_ball = new Ball(new Vector2(m_window.x /2, m_window.y/2), 5.0f, Color.WHITE);
 		m_ball.setVelocity(new Vector2(0, 8));
 
-		m_player1 = new Player(90, 10, new Vector2(m_window.x/2, m_window.y - PADDING), Color.RED, m_window.x, true);
+		//m_player1 = new Player(90, 10, new Vector2(m_window.x/2, m_window.y - PADDING), Color.RED, m_window.x, true);
 		m_player1.isPlayer(true);
-		m_player2 = new Player(90, 10, new Vector2(m_window.x/2, PADDING), Color.BLUE, m_window.x, false);
+		//m_player2 = new Player(90, 10, new Vector2(m_window.x/2, PADDING), Color.BLUE, m_window.x, false);
 		m_textPos = m_player2.getDimensions().x /3;
 	}
 
