@@ -22,9 +22,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     
 	
 	class GameThread extends Thread {
-        /*
-         * State-tracking constants
-         */
+ 
+		
         public static final int STATE_LOSE = 1;
         public static final int STATE_PAUSE = 2;
         public static final int STATE_READY = 3;
