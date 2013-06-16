@@ -7,5 +7,6 @@
     <string name="menu_stop">Stop</string>
     <string name="menu_pause">Pause</string>
 	<string name="menu_resume">Resume</string>
+	<string name="playerButton">button</string>
 
 </resources>
