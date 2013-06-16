@@ -27,7 +27,6 @@ public class Game extends Activity {
 	private GameThread m_gameThread;
 
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,7 +43,6 @@ public class Game extends Activity {
 		m_gameThread = m_game.getThread();
 		m_gameThread.setState(GameThread.STATE_READY);
 		m_gameThread.setPlayers(players);
-		//m_gameThread.resetGame();
 	}
 
 	@Override

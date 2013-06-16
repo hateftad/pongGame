@@ -33,7 +33,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 		public static final int STATE_RUNNING = 4;
 
-		public static final int STATE_WIN = 5;
 
 		//padding for how far from the bottom or top
 		static final int PADDING = 100;
@@ -57,8 +56,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		private int m_canvasHeight;
 
 		private long m_lastTime;
-
-		private Handler m_handler;
 
 		private int m_mode;
 
@@ -98,7 +95,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 			synchronized (m_surfaceHolder) {
 
 				resetGame();
-
 				m_lastTime = System.currentTimeMillis() + 100;
 				setState(STATE_RUNNING);
 			}
@@ -120,13 +116,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 				try {
 					c = m_surfaceHolder.lockCanvas(null);
 					synchronized (m_surfaceHolder) {
-						if (m_mode == STATE_RUNNING) 
+						if (m_mode == STATE_RUNNING){
 							updateGame();
+						}
 						doDraw(c);
 					}
-				}catch(Exception e)
-				{
-				}
+				}catch(Exception e){}
 				finally {
 
 					if (c != null) {
@@ -156,8 +151,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 			}
 		}
 
-		public void setPlayers(boolean onePlayer)
-		{
+		public void setPlayers(boolean onePlayer){
 			m_player2.isPlayer(onePlayer);
 		}
 
@@ -184,8 +178,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 			canvas.drawARGB(255, 0, 0, 0);
 			m_UI.draw(canvas, m_paint);
-			if(!foundWinner())
-			{
+			if(!foundWinner()){
 				m_paint.setStyle(Style.FILL);
 
 				m_player1.draw(canvas, m_paint);
@@ -198,13 +191,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 				setState(STATE_LOSE);
 			}
 			
-			if(m_mode == STATE_READY)
-			{
+			if(m_mode == STATE_READY){
 				canvas.drawText("Start game through Menu", m_canvasWidth /3, m_canvasHeight/3, m_paint);
 			}
 
 		}
-
 
 		private void updateGame() {
 
@@ -228,8 +219,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 				m_ball.resetBall(new Vector2(m_canvasWidth, m_canvasHeight));
 				m_player2.randomizeSpeed();
 			}
-			else if(m_ball.getPosition().y > m_canvasHeight)
-			{
+			else if(m_ball.getPosition().y > m_canvasHeight){
 				m_player2.addPoints();
 				m_UI.updateScore(false);
 				m_ball.resetBall(new Vector2(m_canvasWidth, m_canvasHeight));
@@ -271,8 +261,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 		}
 
-		private Player doAI(Player ai)
-		{
+		private Player doAI(Player ai){
+			
 			float middle = ai.getRectangle().centerX();
 			float minRange = (m_canvasWidth / 2);
 			float maxRange = (m_canvasWidth / 2) - (ai.getDimensions().x);
@@ -310,8 +300,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 			return ai;
 		}
 
-		private boolean collided(Rect rectangle)
-		{
+		private boolean collided(Rect rectangle){
+			
 			float bx = m_ball.getPosition().x; 
 			float by = m_ball.getPosition().y;
 			float radius = m_ball.getRadius();
@@ -330,13 +320,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 			return false;
 		}
 
-		public boolean foundWinner()
-		{
+		public boolean foundWinner(){
+			
 			return (m_player1.getPoints() > WINPOINT-1 || m_player2.getPoints() > WINPOINT-1);
 		}
 
-		public void resetGame()
-		{
+		public void resetGame(){
+			
 			m_ball.resetBall(new Vector2(m_canvasWidth, m_canvasHeight));
 			m_player1.resetPlayer();
 			m_player2.resetPlayer();
@@ -346,10 +336,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 			setState(STATE_RUNNING);
 		}
 
-		public void handleInput(MotionEvent event)
-		{
-
-			
+		public void handleInput(MotionEvent event){
+	
 			InputHandler ih = InputHandler.getInstance();
 			
 			for(int i = 0; i < ih.getTouchCount(event); i++) {
@@ -357,17 +345,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 				int x = (int) ih.getX(event, i);
 				int y = (int) ih.getY(event, i);
 
-				switch (event.getAction())
-				{
+				switch (event.getAction()){
 				case MotionEvent.ACTION_DOWN:
 
-					if(m_player1.getHandle().contains(x, y))
-					{
+					if(m_player1.getHandle().contains(x, y)){
 						m_player1.setSelected(true);
 					}
 
-					if(m_player2.getHandle().contains(x, y))
-					{
+					if(m_player2.getHandle().contains(x, y)){
 						m_player2.setSelected(true);
 						m_player2.isPlayer(true);
 					}
@@ -385,14 +370,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 				case MotionEvent.ACTION_UP:
 					m_player1.setSelected(false);
 					m_player2.setSelected(false);
-					if (getThread().foundWinner()) {
-						getThread().resetGame();	
+					if (foundWinner()) {
+						resetGame();	
 					}
 					break;
 
 				}
 			}
-			//return true;
 		}
 	}
 
@@ -470,8 +454,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 	}
 	
-	
-
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 
