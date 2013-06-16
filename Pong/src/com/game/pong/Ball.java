@@ -19,6 +19,7 @@ public class Ball {
 	
 	//ball speed
 	private float m_ballSpeed;
+	
 	//radius
 	private float m_radius;
 	
@@ -84,20 +85,11 @@ public class Ball {
 	public void inverseX()
 	{
 		m_velocity.x = -m_velocity.x;
-
 	}
 
 	public void inverseY()
 	{
 		m_velocity.y = -m_velocity.y;
-	}
-
-	public void inverseVelocity()
-	{
-		m_velocity.y = -m_velocity.y;
-		m_velocity.x = -m_velocity.x;
-
-		System.out.println(m_ballSpeed);
 	}
 
 	public void setVelocity(Vector2 m_velocity) {

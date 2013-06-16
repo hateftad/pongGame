@@ -188,7 +188,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 			}
 			else {
 				m_UI.showSplashScreen(true);
-				setState(STATE_LOSE);
+				m_thread.pause();
 			}
 			
 			if(m_mode == STATE_READY){
@@ -371,7 +371,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 					m_player1.setSelected(false);
 					m_player2.setSelected(false);
 					if (foundWinner()) {
-						resetGame();	
+						resetGame();
+						doStart();
 					}
 					break;
 
@@ -428,9 +429,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 		if(m_thread.getState() == State.TERMINATED)
 		{
-			m_thread = new GameThread(getHolder(), m_context, getHandler());
+			m_thread = new GameThread(getHolder(), m_context, m_handler);
 			m_thread.setRunning(true);
 			m_thread.start();
+			m_thread.doStart();
 		}
 		else
 		{
