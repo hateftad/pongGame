@@ -33,10 +33,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 		public static final int STATE_RUNNING = 4;
 
-
-		//padding for how far from the bottom or top
-		static final int PADDING = 100;
-
 		static final int WINPOINT = 3;
 
 		private Paint m_paint;
@@ -80,11 +76,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 			m_ball = new Ball(new Vector2(m_canvasWidth /2, m_canvasHeight/2), 5.0f, Color.WHITE);
 			m_ball.setVelocity(new Vector2(0, 8));
 			m_ball.setSpeed(10);
-
-			m_player1 = new Player(m_context, new Vector2(90, 10), new Vector2(m_canvasWidth/2, m_canvasHeight - PADDING), R.drawable.paddle, m_canvasWidth, true);
+			
+			m_player1 = new Player(m_context, new Vector2(m_canvasWidth/2, m_canvasHeight - (m_canvasHeight / 8)), R.drawable.paddle1, m_canvasWidth, true);
 			m_player1.isPlayer(true);
 
-			m_player2 = new Player(m_context, new Vector2(90, 10), new Vector2(m_canvasWidth/2, PADDING), R.drawable.paddle2, m_canvasWidth, false);
+			m_player2 = new Player(m_context, new Vector2(m_canvasWidth/2, (m_canvasHeight / 8)), R.drawable.paddle2, m_canvasWidth, false);
 
 			m_UI = new UserInterface(m_context, m_canvasWidth, m_canvasHeight);
 			
@@ -110,7 +106,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		@Override
 		public void run() {
 
-
 			while (m_run) {
 				Canvas c = null;
 				try {
@@ -131,7 +126,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 			}
 
 		}
-
 
 		public void setRunning(boolean b) {
 			m_run = b;
@@ -265,8 +259,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 			
 			float middle = ai.getRectangle().centerX();
 			float minRange = (m_canvasWidth / 2);
-			float maxRange = (m_canvasWidth / 2) - (ai.getDimensions().x);
-			float width = (ai.getDimensions().x);
+			float maxRange = (m_canvasWidth / 2) - (ai.getTexture().getWidth());
+			float width = (ai.getTexture().getWidth());
 
 
 			if(m_ball.getPosition().y < m_canvasHeight/2)
@@ -361,10 +355,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 					break;
 				case MotionEvent.ACTION_MOVE:
 					if (m_player1.isSelected()) {
-						m_player1.setPosition(x - (m_player1.getDimensions().x/2), m_player1.getPosition().y);
+						m_player1.setPosition(x - (m_player1.getTexture().getWidth()/2), m_player1.getPosition().y);
 					}
 					if (m_player2.isSelected()) {
-						m_player2.setPosition(x - (m_player2.getDimensions().x/2), m_player2.getPosition().y);
+						m_player2.setPosition(x - (m_player2.getTexture().getWidth()/2), m_player2.getPosition().y);
 					}
 					break;
 				case MotionEvent.ACTION_UP:

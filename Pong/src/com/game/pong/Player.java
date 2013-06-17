@@ -25,9 +25,6 @@ public class Player {
 	//the position of the player
 	private Vector2 m_position;
 	
-	//the dimensions of the paddle
-	private Vector2 m_dimensions;
-	
 	//the dimensions of the touchbox
 	private Vector2 m_handleDimensions;
 	
@@ -49,19 +46,18 @@ public class Player {
 	//boolean to check if human or not
 	private boolean m_isPlayer;
 
-	public Player(Context context, Vector2 dimension, Vector2 pos, int resourceId, int canvasWidth, boolean player1)
+	public Player(Context context, Vector2 pos, int resourceId, int canvasWidth, boolean player1)
 	{
 		m_selected = false;
 		m_canvasWidth = canvasWidth;
 		m_score = 0;
 		m_texture = BitmapFactory.decodeResource(context.getResources(), resourceId);
-		m_dimensions = new Vector2(dimension);
 		if (player1) {
-			m_handleDimensions = new Vector2(dimension.y * 10, 0);
+			m_handleDimensions = new Vector2(m_texture.getHeight() * 10, 0);
 		}
 		else
 		{
-			m_handleDimensions = new Vector2(0, dimension.y * 10);
+			m_handleDimensions = new Vector2(0, m_texture.getHeight() * 10);
 		}
 
 		setPosition(pos);
@@ -84,12 +80,12 @@ public class Player {
 
 	public float leftSide()
 	{
-		return m_position.x + (m_dimensions.x /3);
+		return m_position.x + (m_texture.getWidth() /3);
 	}
 
 	public float rightSide()
 	{
-		return m_rectangle.right - (m_dimensions.x /3); 
+		return m_rectangle.right - (m_texture.getWidth() /3); 
 	}
 
 	public Rect getRectangle()
@@ -107,11 +103,13 @@ public class Player {
 		return m_position;
 	}
 
-	public Vector2 getDimensions()
+	
+	public Bitmap getTexture()
 	{
-		return m_dimensions;
+		return m_texture;
 	}
-
+	
+	
 	public void setPosition(Vector2 pos)
 	{
 		this.m_position = pos;
@@ -128,15 +126,15 @@ public class Player {
 	
 	public void update()
 	{
-		this.m_rectangle.set(m_position.x, m_position.y, ( m_position.x + m_dimensions.x),(m_position.y + m_dimensions.y));
-		this.m_handle.set(m_position.x, (m_position.y - (m_handleDimensions.y)), ( m_position.x + m_dimensions.x),( m_position.y + m_handleDimensions.x));
+		this.m_rectangle.set(m_position.x, m_position.y, ( m_position.x + m_texture.getWidth()),(m_position.y + m_texture.getHeight()));
+		this.m_handle.set(m_position.x, (m_position.y - (m_handleDimensions.y)), ( m_position.x + m_texture.getWidth()),( m_position.y + m_handleDimensions.x));
 	}
 
 	public void move(int x)
 	{
 
-		if ((m_position.x + m_dimensions.x) > m_canvasWidth) {
-			m_position.x = m_canvasWidth - m_dimensions.x;
+		if ((m_position.x + m_texture.getWidth()) > m_canvasWidth) {
+			m_position.x = m_canvasWidth - m_texture.getWidth();
 		}
 		else if(m_position.x < 0)
 		{

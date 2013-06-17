@@ -33,8 +33,8 @@ public class Game extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		Intent gameIntent = getIntent();
 		
+		Intent gameIntent = getIntent();
 		boolean players = gameIntent.getBooleanExtra("players", false);
 		
 		setContentView(R.layout.game_view);
